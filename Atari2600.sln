@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35309.182
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atari2600.Disassembler", "Atari2600.Disassembler\Atari2600.Disassembler.csproj", "{12FD2B41-F4C9-4FA5-A7C5-52D6DFDB36EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atari2600.Test", "Atari2600.Test\Atari2600.Test.csproj", "{F44315C6-7105-491C-A954-4F9FC4C7ED1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Atari2600.Emulator", "Atari2600.Emulator\Atari2600.Emulator.csproj", "{E11B7141-B9D0-41F1-9BDE-B44B116F54E5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12FD2B41-F4C9-4FA5-A7C5-52D6DFDB36EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12FD2B41-F4C9-4FA5-A7C5-52D6DFDB36EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12FD2B41-F4C9-4FA5-A7C5-52D6DFDB36EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12FD2B41-F4C9-4FA5-A7C5-52D6DFDB36EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44315C6-7105-491C-A954-4F9FC4C7ED1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44315C6-7105-491C-A954-4F9FC4C7ED1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F44315C6-7105-491C-A954-4F9FC4C7ED1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F44315C6-7105-491C-A954-4F9FC4C7ED1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E11B7141-B9D0-41F1-9BDE-B44B116F54E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E11B7141-B9D0-41F1-9BDE-B44B116F54E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E11B7141-B9D0-41F1-9BDE-B44B116F54E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E11B7141-B9D0-41F1-9BDE-B44B116F54E5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {649F7EFA-8A88-4F32-A4E4-3E2975C89365}
+	EndGlobalSection
+EndGlobal
