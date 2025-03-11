@@ -132,6 +132,8 @@ public class AtariColor(byte value) {
                                                                          { 0xFE, "#FCE08C" }
                                                                      };
 
+    public static string[] AllColors => AtariColor.ColorMap.Values.ToArray();
+
     public string Hex => AtariColor.ColorMap[value & 0xFE];
 
     public string GetConsoleColor() {

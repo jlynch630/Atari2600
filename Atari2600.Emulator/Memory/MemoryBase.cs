@@ -32,7 +32,7 @@ internal abstract class MemoryBase : IMemory {
     public ushort ReadAddress(ushort address) {
         byte Low = this.ReadByte(address);
         byte High = this.ReadByte((ushort)(address + 1));
-        return AddressUtils.AddressFromBytes([High, Low]);
+        return AddressUtils.AddressFromBytes([Low, High]);
     }
 
     public abstract byte ReadByte(ushort address);

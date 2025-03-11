@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Silk.NET.Direct2D" Version="2.22.0" />
+    <PackageReference Include="unvell.d2dlib-x64" Version="1.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Atari2600.Emulator\Atari2600.Emulator.csproj" />
   </ItemGroup>
 
