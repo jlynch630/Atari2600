@@ -36,7 +36,7 @@ internal abstract class GroupOneOperation : IOperation {
 
     protected static int GetBcdValue(byte b) {
         int Low = b & 0xf;
-        int High = b & (0xf0 >>> 4);
+        int High = (b & 0xf0) >>> 4;
         if (Low >= 10 || High >= 10) throw new ApplicationException("Invalid BCD value: " + b);
 
         return High * 10 + Low;

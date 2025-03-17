@@ -2,9 +2,10 @@
 
 internal abstract class MemoryBase : IMemory {
     public (byte Value, ushort StackPointer) PopStack(ushort ptr) {
-        byte Value = this.ReadByte(ptr);
-        int NewPointer = ptr + 1;
-        return (Value, NewPointer > 255 ? (ushort)0 : (ushort)NewPointer);
+        ushort NewPointer = ptr >= 255 ? (ushort)0 : (ushort)(ptr + 1);
+
+        byte Value = this.ReadByte(NewPointer);
+        return (Value, NewPointer);
     }
 
     public (ushort Address, ushort StackPointer) PopStackAddress(ushort ptr) {

@@ -1,9 +1,11 @@
 ﻿namespace Atari2600.Emulator.Tia;
 
-internal class GraphicsObject {
+internal class GraphicsObject(int processingTime) {
+    private const int MaxDecodeValue = Tia.HorizontalScan - Tia.HorizontalBlank;
+
     public AtariColor? Color { get; set; }
 
-    public int Copies { get; set; }
+    public int Copies { get; set; } = 1;
 
     public bool Enabled { get; set; }
 
@@ -38,21 +40,13 @@ internal class GraphicsObject {
 
     public static byte GetGraphicsPattern(int width) => (byte)(Math.Pow(2, width) - 1);
 
-    public void Move() {
-        this.HorizontalDecode += this.Speed;
-    }
-
-    public void SetSpeedFromByte(byte value) {
-        this.Speed = (sbyte)value >> 4;
-    }
-
-    public AtariColor? ShouldDraw() {
+    public AtariColor? GetDrawColor() {
         if (!this.Enabled) return null;
 
         if (this.Spacing == 0) return this.GetColorAtIndex(this.HorizontalDecode / this.Copies);
 
-        for (int i = 0, j = 0; i < this.Copies; i++, j += this.Spacing * 8) {
-            int Offset = this.Spacing == 0 ? this.HorizontalDecode / this.Copies : this.HorizontalDecode - j;
+        for (int i = 0, j = 0; i < this.Copies; i++, j += 8 + this.Spacing * 8) {
+            int Offset = this.HorizontalDecode - j;
             if (Offset >= 8) continue;
 
             return this.GetColorAtIndex(Offset);
@@ -61,9 +55,28 @@ internal class GraphicsObject {
         return null;
     }
 
+    public void Move() {
+        this.HorizontalDecode += this.Speed;
+
+        if (this.HorizontalDecode >= GraphicsObject.MaxDecodeValue)
+            this.HorizontalDecode -= GraphicsObject.MaxDecodeValue;
+        if (this.HorizontalDecode < 0) this.HorizontalDecode += GraphicsObject.MaxDecodeValue;
+    }
+
+    public void Reset(int xPos) {
+        // strobing reset usually needs some processing time, we can just introduce that
+        // by decoding earlier
+        this.HorizontalDecode = GraphicsObject.MaxDecodeValue - (processingTime + (this.Copies > 1 ? 1 : 0));
+    }
+
+    public void SetSpeedFromByte(byte value) {
+        this.Speed = (sbyte)value >> 4;
+    }
+
     public void Step() {
         this.HorizontalDecode++;
-        if (this.HorizontalDecode >= Tia.HorizontalScan - Tia.HorizontalBlank) this.HorizontalDecode = 0;
+        if (this.HorizontalDecode >= GraphicsObject.MaxDecodeValue)
+            this.HorizontalDecode -= GraphicsObject.MaxDecodeValue;
     }
 
     private AtariColor? GetColorAtIndex(int index) {
@@ -71,7 +84,7 @@ internal class GraphicsObject {
         byte Pattern = this.Reflect ? this.GraphicsPattern.Reverse() : this.GraphicsPattern;
 
         // we're within our bounds!
-        int Shifted = 1 << index;
+        int Shifted = 1 << (7 - index);
         return (Pattern & Shifted) == Shifted ? this.Color : null;
     }
 }

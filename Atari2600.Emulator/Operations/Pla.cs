@@ -8,6 +8,8 @@ internal class Pla : IOperation {
     public int Apply(EmulationState state, Instruction instruction) {
         (byte Value, state.StackPointer) = state.Memory.PopStack(state.StackPointer);
         state.Accumulator.Value = Value;
+        state.StatusRegister.SetZeroFromByteResult(Value);
+        state.StatusRegister.SetNegativeFromByteResult(Value);
         return 4;
     }
 }

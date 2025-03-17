@@ -22,9 +22,9 @@ internal class Ldy : IOperation {
 
         return instruction.AddressingMode switch {
             AddressingMode.ZeroPage => 3,
-            AddressingMode.ZeroPageY => 4,
+            AddressingMode.ZeroPageX => 4,
             AddressingMode.Absolute => 4,
-            AddressingMode.AbsoluteY => 4,
+            AddressingMode.AbsoluteX => 4,
             _ => throw new ArgumentOutOfRangeException()
         } + (PageCross ? 0 : 1);
     }

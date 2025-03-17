@@ -5,7 +5,7 @@ public class Register(string name) {
 
     public static implicit operator byte(Register register) => register.Value;
 
-    public void SetFromInt(int value) => this.Value = (byte)(value % 256);
+    public void SetFromInt(int value) => this.Value = unchecked((byte)(value % 256));
 
-    public override string ToString() => $"{name}: ${this.Value}";
+    public override string ToString() => $"{name}: {this.Value}";
 }

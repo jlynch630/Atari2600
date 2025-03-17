@@ -1,17 +1,21 @@
 ﻿namespace Atari2600.Emulator.Pia.IO;
 
-internal class Joystick : IIOPort {
+public class Joystick : IController {
     [Flags]
     public enum JoystickDirection {
-        Right = 0b1,
-        Left = 0b10,
-        Down = 0b100,
-        Up = 0b1000
+        Right = 0b1000,
+        Left = 0b100,
+        Down = 0b10,
+        Up = 0b1
     }
 
     public JoystickDirection PlayerOne { get; set; }
 
+    public bool PlayerOneButton { get; set; }
+
     public JoystickDirection PlayerTwo { get; set; }
+
+    public bool PlayerTwoButton { get; set; }
 
     public void ConfigureInputOutput(byte mask) {
         throw new NotSupportedException();
@@ -25,4 +29,6 @@ internal class Joystick : IIOPort {
     public void Write(byte value) {
         throw new NotSupportedException();
     }
+
+    public byte ReadInput(int index) => (byte)(index == 4 ? this.PlayerOneButton ? 0 : 128 : 0);
 }

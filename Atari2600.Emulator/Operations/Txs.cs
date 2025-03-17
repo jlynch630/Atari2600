@@ -7,8 +7,6 @@ internal class Txs : IOperation {
 
     public int Apply(EmulationState state, Instruction instruction) {
         state.StackPointer = state.XIndex;
-        state.StatusRegister.SetZeroFromByteResult(state.XIndex);
-        state.StatusRegister.SetNegativeFromByteResult(state.XIndex);
 
         return 2;
     }

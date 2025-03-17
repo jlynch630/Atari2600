@@ -8,14 +8,14 @@ using Memory;
 ///     memory from the perspective of the microcontroller, since all it can do is read from or write to it
 /// </summary>
 internal class Pia(ConsoleSwitches switches, IIOPort portA) : MemoryBase {
-    private const ushort INTIM = 0x284; // timer read
-    private const ushort SWACNT = 0x281; // port a data control
-    private const ushort SWCHA = 0x280; // port a read/write
-    private const ushort SWCHB = 0x282; // console switch read
-    private const ushort TIM1T = 0x294; // timer interval 1 cycle
-    private const ushort TIM24T = 0x297; // timer interval 1024 cycles
-    private const ushort TIM64T = 0x296; // timer interval 64 cycles
-    private const ushort TIM8T = 0x295; // timer interval 8 cycles
+    private const ushort INTIM = 0x4; // timer read
+    private const ushort SWACNT = 0x1; // port a data control
+    private const ushort SWCHA = 0x0; // port a read/write
+    private const ushort SWCHB = 0x2; // console switch read
+    private const ushort TIM1T = 0x14; // timer interval 1 cycle
+    private const ushort TIM24T = 0x17; // timer interval 1024 cycles
+    private const ushort TIM64T = 0x16; // timer interval 64 cycles
+    private const ushort TIM8T = 0x15; // timer interval 8 cycles
 
     private readonly PiaTimer Timer = new();
 

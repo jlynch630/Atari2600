@@ -30,9 +30,12 @@
             this.AutoScaleDimensions = new SizeF(17F, 41F);
             this.AutoScaleMode = AutoScaleMode.Font;
             this.ClientSize = new Size(800, 450);
+            this.Location = new Point(0, 0);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += this.Form1_Load;
+            this.KeyDown += this.Form1_KeyDown;
+            this.KeyUp += this.Form1_KeyUp;
             this.ResumeLayout(false);
         }
 

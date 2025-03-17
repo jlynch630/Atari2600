@@ -152,7 +152,33 @@ public static class InstructionParser {
                 { 0xBA, new InstructionDefinition(OperationType.Tsx, AddressingMode.Implicit, 1) },
                 { 0x8A, new InstructionDefinition(OperationType.Txa, AddressingMode.Implicit, 1) },
                 { 0x9A, new InstructionDefinition(OperationType.Txs, AddressingMode.Implicit, 1) },
-                { 0x98, new InstructionDefinition(OperationType.Tya, AddressingMode.Implicit, 1) }
+                { 0x98, new InstructionDefinition(OperationType.Tya, AddressingMode.Implicit, 1) },
+
+                // illegals
+                { 0xE7, new InstructionDefinition(OperationType.Isc, AddressingMode.ZeroPage, 2) },
+                { 0xF7, new InstructionDefinition(OperationType.Isc, AddressingMode.ZeroPageX, 2) },
+                { 0xEF, new InstructionDefinition(OperationType.Isc, AddressingMode.Absolute, 3) },
+                { 0xFF, new InstructionDefinition(OperationType.Isc, AddressingMode.AbsoluteX, 3) },
+                { 0xFb, new InstructionDefinition(OperationType.Isc, AddressingMode.AbsoluteY, 3) },
+                { 0xE3, new InstructionDefinition(OperationType.Isc, AddressingMode.IndexedIndirect, 2) },
+                { 0xF3, new InstructionDefinition(OperationType.Isc, AddressingMode.IndirectIndexed, 2) },
+
+                { 0x04, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPage, 2) },
+                { 0x44, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPage, 2) },
+                { 0x64, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPage, 2) },
+                { 0x14, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPageX, 2) },
+                { 0x34, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPageX, 2) },
+                { 0x54, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPageX, 2) },
+                { 0x74, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPageX, 2) },
+                { 0xD4, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPageX, 2) },
+                { 0xF4, new InstructionDefinition(OperationType.Nop, AddressingMode.ZeroPageX, 2) },
+                { 0x0C, new InstructionDefinition(OperationType.Nop, AddressingMode.Absolute, 3) },
+                { 0x1C, new InstructionDefinition(OperationType.Nop, AddressingMode.AbsoluteX, 3) },
+                { 0x3C, new InstructionDefinition(OperationType.Nop, AddressingMode.AbsoluteX, 3) },
+                { 0x5C, new InstructionDefinition(OperationType.Nop, AddressingMode.AbsoluteX, 3) },
+                { 0x7C, new InstructionDefinition(OperationType.Nop, AddressingMode.AbsoluteX, 3) },
+                { 0xDC, new InstructionDefinition(OperationType.Nop, AddressingMode.AbsoluteX, 3) },
+                { 0xFC, new InstructionDefinition(OperationType.Nop, AddressingMode.AbsoluteX, 3) }
             };
 
     public static Instruction? ParseInstruction(Stream source) {
@@ -162,19 +188,21 @@ public static class InstructionParser {
             return null;
         }
 
-        if (!InstructionParser.InstructionRegistry.ContainsKey(OpCode)) {
-            // todo: show warning?
-            // throw new ApplicationException("Invalid OpCode: " + OpCode.ToString("X2"));
-            // when the opcode doesnt exist, actually just skip it and let it be "data in memory"
+        if (!InstructionParser.InstructionRegistry.TryGetValue(OpCode, out InstructionDefinition? Match)) {
+            // when the opcode doesnt exist,  just skip it and let it be "data in memory"
             return new Instruction((byte)OpCode, OperationType.Nop, AddressingMode.Implicit, null);
         }
 
-        InstructionDefinition Match = InstructionParser.InstructionRegistry[OpCode];
         byte[]? NextBytes = null;
         if (Match.TotalByteCount > 1) {
             NextBytes = new byte[Match.TotalByteCount - 1];
             int Read = source.Read(NextBytes);
-            if (Read < NextBytes.Length) throw new IOException("Could not read " + NextBytes + " byte(s) from stream");
+            if (Read < NextBytes.Length) {
+                // probably just data
+                return new Instruction((byte)OpCode, OperationType.Nop, AddressingMode.Implicit, null);
+
+                //throw new IOException("Could not read " + NextBytes + " byte(s) from stream");
+            }
         }
 
         return new Instruction((byte)OpCode, Match.OperationType, Match.AddressingMode, NextBytes);

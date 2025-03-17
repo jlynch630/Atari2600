@@ -56,5 +56,28 @@ public enum OperationType {
     Tsx,
     Txa,
     Txs,
-    Tya
+    Tya,
+
+    // illegal operations
+    Alr,
+    Anc,
+    Ane,
+    Arr,
+    Dcp,
+    Isc,
+    Las,
+    Lax,
+    Lxa,
+    Rla,
+    Rra,
+    Sax,
+    Sbx,
+    Sha,
+    Shx,
+    Shy,
+    Slo,
+    Are,
+    Tas,
+    Usbc,
+    Jam
 }

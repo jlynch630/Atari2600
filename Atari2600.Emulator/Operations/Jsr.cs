@@ -7,10 +7,10 @@ internal class Jsr : IOperation {
 
     public int Apply(EmulationState state, Instruction instruction) {
         (ushort Address, bool _) = AddressUtils.AddressFromInstruction(instruction, state);
-        ushort MemoryValue = state.Memory.ReadAddress(Address);
-        state.ProgramCounter = MemoryValue;
+        state.StackPointer = state.Memory.PushStack(state.StackPointer, (ushort)(state.ProgramCounter - 1));
 
-        state.StackPointer = state.Memory.PushStack(state.StackPointer, (ushort)(state.ProgramCounter + 2));
+        ushort MemoryValue = Address;
+        state.ProgramCounter = MemoryValue;
 
         return instruction.AddressingMode switch {
             AddressingMode.Absolute => 6,

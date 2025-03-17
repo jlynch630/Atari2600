@@ -1,6 +1,6 @@
 ﻿namespace Atari2600.Emulator.Pia.IO;
 
-internal interface IIOPort {
+public interface IIOPort {
     public void ConfigureInputOutput(byte mask);
 
     public byte Read();

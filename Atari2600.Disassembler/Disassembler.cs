@@ -16,4 +16,9 @@ public class Disassembler {
 
         return Instructions.ToArray();
     }
+
+    // public static void CreateFile(Stream stream) {
+    //     Instruction[] AllInstructions = Disassembler.ReadFromStream(stream);
+    //     
+    // }
 }

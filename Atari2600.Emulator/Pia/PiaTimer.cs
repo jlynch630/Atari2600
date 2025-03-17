@@ -10,7 +10,7 @@ internal class PiaTimer {
 
     public void Initialize(byte startValue, int cycleInterval) {
         this.Value = startValue;
-        this.CycleInterval = 0;
+        this.CycleInterval = cycleInterval;
         this.HasTimerElapsed = false;
         this.NumCyclesPassed = 0;
     }
@@ -25,11 +25,11 @@ internal class PiaTimer {
         }
 
         this.NumCyclesPassed++;
-        if (this.NumCyclesPassed >= this.CycleInterval) {
-            this.NumCyclesPassed = 0;
-            this.Value--;
+        if (this.NumCyclesPassed < this.CycleInterval) return;
 
-            if (this.Value == 0) this.HasTimerElapsed = true;
-        }
+        this.NumCyclesPassed = 0;
+        if (this.Value == 0) this.HasTimerElapsed = true;
+
+        this.Value--;
     }
 }

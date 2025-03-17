@@ -2,7 +2,7 @@
 
 internal static class AtariMap {
     public static MappedMemory CreateAtariMap(IMemory tiaRegisters, IMemory piaRegisters, IMemory ram,
-                                              IMemory programData) {
+                                              ReadOnlyMemory programData) {
         MappedMemory Map = new();
 
         /*
@@ -18,12 +18,7 @@ internal static class AtariMap {
          *                                                 *
          ***************************************************
          */
-
-        for (int X = 0; X < 16; X += 2)
-            for (int Y = 0; Y < 16; Y++) {
-                Map.AddMemory((ushort)(X * 4096 + Y * 256 + 0x00), 0x40, tiaRegisters);
-                Map.AddMemory((ushort)(X * 4096 + Y * 256 + 0x40), 0x40, tiaRegisters);
-            }
+        Map.AddMemory(a => (a & 0x1080) == 0 ? (ushort)(a & 0x3f) : null, tiaRegisters);
 
         /*
          **************************************
@@ -37,10 +32,7 @@ internal static class AtariMap {
          *                                    *
          **************************************
          */
-        int[] RamYs = [0, 1, 4, 5, 8, 9, 0xc, 0xd];
-        for (int X = 0; X < 16; X += 2)
-            foreach (int Y in RamYs)
-                Map.AddMemory((ushort)(X * 4096 + Y * 256 + 0x80), 0x80, ram);
+        Map.AddMemory(a => (a & 0x1280) == 0x80 ? (ushort)(a & 0x7f) : null, ram);
 
         /*
          *****************************************
@@ -53,8 +45,7 @@ internal static class AtariMap {
          *                                       *
          *****************************************
          */
-        for (int i = 0x1000; i < 0xffff; i += 0x2000)
-            Map.AddMemory((ushort)i, 0x1000, programData);
+        Map.AddMemory(a => a >= 0x1000 ? (ushort)(a % programData.Length) : null, programData);
 
         /*
          ****************************************
@@ -69,12 +60,7 @@ internal static class AtariMap {
          *                                      *
          ****************************************
          */
-        int[] PiaYs = [2, 3, 6, 7, 0xa, 0xb, 0xe, 0xf];
-        int[] PiaZs = [8, 0xa, 0xc, 0xe];
-        for (int X = 0; X < 16; X += 2)
-            foreach (int Y in PiaYs)
-                foreach (int Z in PiaZs)
-                    Map.AddMemory((ushort)(X * 4096 + Y * 256 + Z * 16), 32, piaRegisters);
+        Map.AddMemory(a => (a & 0x1280) == 0x280 ? (ushort)(a & 0x1f) : null, piaRegisters);
         return Map;
     }
 }
